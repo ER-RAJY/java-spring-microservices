@@ -25,13 +25,15 @@ public class Patient {
 
 
     @NotNull
+    @Column(name = "address")
     private String adresse;
 
     @NotNull
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
     @NotNull
-    @NotNull
+    @Column(name = "registered_date")
     private LocalDate dateOfRegester;
 
     public UUID getId() {
