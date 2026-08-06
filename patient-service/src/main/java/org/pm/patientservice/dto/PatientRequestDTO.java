@@ -3,6 +3,7 @@ package org.pm.patientservice.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.pm.patientservice.dto.validator.UpdatePatientValidationGroup;
 
 public class PatientRequestDTO {
     @NotBlank(message = "Name is mandatory")
@@ -16,10 +17,10 @@ public class PatientRequestDTO {
     @NotBlank(message = "Adresse is mandatory")
     private String adresse;
 
-    @NotBlank(message = "Date of birthday is required")
+    @NotBlank(groups = UpdatePatientValidationGroup.class, message = "Date of birthday is required")
     private String dateOfBirth;
 
-    @NotBlank(message = "Register date is required")
+    @NotBlank(groups = UpdatePatientValidationGroup.class, message = "Register date is required")
     private String registerDate;
 
     public String getName() {

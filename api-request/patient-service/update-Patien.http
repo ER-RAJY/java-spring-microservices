@@ -6,7 +6,6 @@ Content-Type: application/json
   "name": "Jane nass",
   "email": "testupdate@gmail.com",
     "adresse": "456 Oak St",
-    "dateOfBirth": "1995-05-20",
-    "registerDate": "2024-08-05"
+    "dateOfBirth": "1995-05-20"
 }
 ###

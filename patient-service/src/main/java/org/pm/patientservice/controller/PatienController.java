@@ -1,12 +1,16 @@
 package org.pm.patientservice.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
+import org.hibernate.boot.model.internal.XMLContext;
 import org.pm.patientservice.dto.PatienResponseDTO;
 import org.pm.patientservice.dto.PatientRequestDTO;
+import org.pm.patientservice.dto.validator.UpdatePatientValidationGroup;
 import org.pm.patientservice.repository.PatienRepository;
 import org.pm.patientservice.service.PatienService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,13 +32,13 @@ public class PatienController {
     }
 
     @PostMapping
-    public ResponseEntity<PatienResponseDTO> createPatient(@Valid @RequestBody PatientRequestDTO patientRequestDTO){
+    public ResponseEntity<PatienResponseDTO> createPatient(@Validated({Default.class, UpdatePatientValidationGroup.class} ) @RequestBody PatientRequestDTO patientRequestDTO){
         PatienResponseDTO patienResponseDTO = patienService.createPatien(patientRequestDTO);
         return ResponseEntity.ok().body(patienResponseDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PatienResponseDTO> updatePatient(@PathVariable UUID id, @Valid @RequestBody PatientRequestDTO patientRequestDTO){
+    public ResponseEntity<PatienResponseDTO> updatePatient(@PathVariable UUID id, @Validated(Default.class) @RequestBody PatientRequestDTO patientRequestDTO){
         PatienResponseDTO patienResponseDTO = patienService.updatePatien(id, patientRequestDTO);
         return ResponseEntity.ok().body(patienResponseDTO);
     }

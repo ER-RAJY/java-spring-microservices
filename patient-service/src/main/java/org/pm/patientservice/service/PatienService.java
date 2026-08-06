@@ -47,10 +47,16 @@ public class PatienService {
         existingPatient.setEmail(patientRequestDTO.getEmail());
         existingPatient.setAdresse(patientRequestDTO.getAdresse());
         existingPatient.setDateOfBirth(patientRequestDTO.getDateOfBirth() != null ? LocalDate.parse(patientRequestDTO.getDateOfBirth()) : null);
-        existingPatient.setDateOfRegester(patientRequestDTO.getRegisterDate() != null ? LocalDate.parse(patientRequestDTO.getRegisterDate()) : null);
 
         Patient updatedPatient = patienRepository.save(existingPatient);
         return PatienMapper.toDTO(updatedPatient);
+    }
+
+    public void deletePatient(UUID id) {
+        if (!patienRepository.existsById(id)) {
+            throw new PatientNotFoundException("Patient not found with id: " + id);
+        }
+        patienRepository.deleteById(id);
     }
 
 }
