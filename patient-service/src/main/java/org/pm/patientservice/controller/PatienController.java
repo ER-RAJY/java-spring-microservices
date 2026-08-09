@@ -1,5 +1,7 @@
 package org.pm.patientservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import org.hibernate.boot.model.internal.XMLContext;
@@ -19,6 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/patients")
+@Tag(name = "Patient Controller", description = "API for managing patients")
 public class PatienController {
     private final PatienService  patienService;
     public PatienController(PatienService patienService) {
@@ -26,20 +29,30 @@ public class PatienController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all patients", description = "Retrieve a list of all patients")
     public ResponseEntity<List<PatienResponseDTO>> getPatients(){
         List<PatienResponseDTO> patien = patienService.getPatiens();
         return ResponseEntity.ok().body(patien);
     }
 
     @PostMapping
+    @Operation(summary = "Create a new patient", description = "Create a new patient with the provided details")
     public ResponseEntity<PatienResponseDTO> createPatient(@Validated({Default.class, UpdatePatientValidationGroup.class} ) @RequestBody PatientRequestDTO patientRequestDTO){
         PatienResponseDTO patienResponseDTO = patienService.createPatien(patientRequestDTO);
         return ResponseEntity.ok().body(patienResponseDTO);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update a patient", description = "Update an existing patient with the provided details")
     public ResponseEntity<PatienResponseDTO> updatePatient(@PathVariable UUID id, @Validated(Default.class) @RequestBody PatientRequestDTO patientRequestDTO){
         PatienResponseDTO patienResponseDTO = patienService.updatePatien(id, patientRequestDTO);
         return ResponseEntity.ok().body(patienResponseDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a patient", description = "Delete an existing patient")
+    public ResponseEntity<Void> deletePatient(@PathVariable UUID id ){
+        patienService.deletePatient(id);
+        return ResponseEntity.noContent().build();
     }
 }
