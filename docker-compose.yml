@@ -1,0 +1,33 @@
+services:
+  patient-service-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: pm_user
+      POSTGRES_PASSWORD: pm_pass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+    test: ["CMD-SHELL", "pg_isready -U pm_user -d db"]
+      interval: 5s
+      retries: 5
+
+  patient-service:
+    build:
+      context: ./patient-service
+      dockerfile: Dockerfile
+    image: patient-service:latest
+    depends_on:
+      patient-service-db:
+        condition: service_healthy
+    ports:
+      - "4000:4000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://patient-service-db:5432/db
+      SPRING_DATASOURCE_USERNAME: pm_user
+      SPRING_DATASOURCE_PASSWORD: pm_pass
+      SPRING_PROFILES_ACTIVE: prod
+    restart: unless-stopped
+
+volumes:
+  pgdata: {}
