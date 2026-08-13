@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package billing_service;
+
+service BillingService {
+  rpc CreateBillingAccount(CreateBillingAccountRequest) returns (CreateBillingAccountResponse);
+}
+
+message CreateBillingAccountRequest {
+  string patientId = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message CreateBillingAccountResponse {
+  string patientId = 1;
+  string status = 2;
+}
